@@ -9,12 +9,15 @@ except ImportError:
 # to search
 print("Enter Keywords or search phrase") 
 query = input()
+print("Enter the number of pages you want to go through")
+page_num = int(input())
   
-for j in search(query, tld="co.in", num=10, stop=1, pause=2):
+for j in search(query, tld="co.in", num=page_num, stop=1, pause=2):
     search = j
     page = urlopen(search)
     soup = BeautifulSoup(page, 'html.parser')
-    print(soup)
+    with open('results.html', "w") as file:
+        file.write(str(soup))
     
     
     
