@@ -24,7 +24,7 @@ id_index = 0
 con = psycopg2.connect("host='localhost' dbname='google_crawl' user='crawler' password='crawl'")
 cur = con.cursor()
 try:
-    cur.execute("CREATE TABLE Products(Id INTEGER PRIMARY KEY, website VARCHAR(20), html_code VARCHAR)")
+    cur.execute("CREATE TABLE Products(Id INTEGER PRIMARY KEY, website VARCHAR, html_code VARCHAR)")
 except:
     None
 try:
@@ -45,7 +45,7 @@ try:
 
 
         try:
-            cur.execute("INSERT INTO Products VALUES(%s, %s, %s)",[id_index, "test",raw_soup]),
+            cur.execute("INSERT INTO Products VALUES(%s, %s, %s)",[id_index, j,raw_soup]),
             con.commit()
         except psycopg2.DatabaseError as e:
             if con:
