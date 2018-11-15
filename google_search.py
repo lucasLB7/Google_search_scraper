@@ -30,7 +30,7 @@ try:
             con = psycopg2.connect("host='localhost' dbname='google_crawl' user='crawler' password='crawl'")
             cur = con.cursor()
             cur.execute("CREATE TABLE Products(Id INTEGER PRIMARY KEY, website VARCHAR(20), html_code VARCHAR)")
-            cur.execute("INSERT INTO Products (Id, website, html_code) VALUES(1,"test",soup)"),
+            cur.execute("INSERT INTO Products VALUES(1,'test',soup)"),
             con.commit()
         except psycopg2.DatabaseError as e:
             if con:
