@@ -23,7 +23,10 @@ page_num = int(input())
 id_index = 0
 con = psycopg2.connect("host='localhost' dbname='google_crawl' user='crawler' password='crawl'")
 cur = con.cursor()
-cur.execute("CREATE TABLE Products(Id INTEGER PRIMARY KEY, website VARCHAR(20), html_code VARCHAR)")
+try:
+    cur.execute("CREATE TABLE Products(Id INTEGER PRIMARY KEY, website VARCHAR(20), html_code VARCHAR)")
+except:
+    None
 try:
     for j in search(query, tld="co.in", num=page_num, stop=1, pause=2):
         search = j
@@ -31,6 +34,10 @@ try:
         soup = BeautifulSoup(page, 'html.parser')
         raw_soup = ("r'%s'"%(soup,))
         id_index += 1
+        stringed_index = str(id_index)
+        print(j, id_index)
+        with open('results'+ stringed_index +'.html', "w") as file:
+            file.write(str(soup))
 
         # def adapt_soup(soup):
         #     return AsIs("'(%s)'" % (soup))
@@ -38,27 +45,19 @@ try:
 
 
         try:
-
             cur.execute("INSERT INTO Products VALUES(%s, %s, %s)",[id_index, "test",raw_soup]),
             con.commit()
         except psycopg2.DatabaseError as e:
             if con:
                 con.rollback()
-            print('Error %s' % e)
+            print('ShitAnError %s' % e)
             sys.exit(1)
 
-        finally:
-            if con:
-                con.close()
-
-
-        # with open('results.html', "w") as file:
-        #     file.write(str(soup))
-
-
-
 except:
-    print("error")
+    print("ShitAnError")
+
+if con:
+    con.close()
 
 
 
